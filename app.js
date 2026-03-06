@@ -39,8 +39,8 @@ app.post('/api/logs', bodyParser, (req, res) => {
     // 先檢查 level 是否為有效方法，否則 fallback 到 info
     const activeLevel = typeof logger[level] === 'function' ? level : 'info';
 
-    // 直接透過 logger[level](...) 呼叫，確保 context 正確
-    logger[activeLevel](meta || {}, message);
+    // 直接透過傳入一個物件，先設定 `msg` 再放 `meta`，讓輸出時 `msg` 在前
+    logger[activeLevel]({ msg: message, meta: meta || {} });
     res.sendStatus(204);
 });
 
