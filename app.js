@@ -40,9 +40,7 @@ app.post('/api/logs', bodyParser, (req, res) => {
     const activeLevel = typeof logger[level] === 'function' ? level : 'info';
 
     // 直接透過 logger[level](...) 呼叫，確保 context 正確
-    logger[activeLevel](message);
-
-    // logger[activeLevel](meta || {}, message);
+    logger[activeLevel](meta || {}, message);
     res.sendStatus(204);
 });
 

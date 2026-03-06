@@ -1,7 +1,7 @@
 function sendBrowserLog(level, args) {
     const payload = {
         level,
-        message: args.map(a => (typeof a === 'string' ? a : JSON.stringify(a))).join(' '),
+        message: JSON.stringify(args?.[0]),
         meta: args.slice(1)
     };
     const url = 'http://localhost:3001/api/logs'; // or full URL to your logging server
