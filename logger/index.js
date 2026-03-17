@@ -1,16 +1,18 @@
-function sendBrowserLog(level, args) {
+async function sendBrowserLog(level, args) {
     const payload = {
         level,
         message: JSON.stringify(args?.[0]),
         meta: args.slice(1)
     };
-    const url = 'http://localhost:3001/api/logs'; // or full URL to your logging server
+    const url = process.env.REACT_APP_DEV_LOG_URL;
     const body = JSON.stringify(payload);
-    if (navigator.sendBeacon) {
-        const blob = new Blob([body], { type: 'application/json' });
-        navigator.sendBeacon(url, blob);
-    } else {
-        fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body });
+    
+    if (!url) return;
+
+    try {
+        await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body });
+    } catch (error) {
+        console.log("Log server is not connected.")
     }
 }
 
