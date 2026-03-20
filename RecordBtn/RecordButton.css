@@ -1,0 +1,22 @@
+.rc-record-btn-wrapper {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 2000;
+}
+
+.rc-record-btn {
+  background: #ffffffcc;
+  border: 1px solid #ccc;
+  padding: 8px 12px;
+  border-radius: 6px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.rc-record-btn.rc-recording {
+  background: linear-gradient(90deg, #ff5f5f, #ff9b5f);
+  color: #fff;
+  border-color: #ff5f5f;
+}

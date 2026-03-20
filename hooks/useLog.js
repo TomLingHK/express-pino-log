@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { logger } from "../logger"
 
 function useActionLog(componentName) {
@@ -35,7 +35,6 @@ function useApiLog(componentName) {
     return logApi;
 }
 
-
 function useButtonLog(componentName) {
     const logClick = useCallback((buttonId, additionalData = {}) => {
         logger.info(
@@ -68,22 +67,29 @@ function useErrorLog(componentName) {
     return logError;
 }
 
-function useRenderLog(componentName, propsToTrack = {}) {
+function useRenderLog(componentName, route='/', propsToTrack = {}) {
     const renderCount = useRef(0);
+    renderCount.current = (renderCount.current || 0) + 1;
 
     useEffect(() => {
-        logger.info(
-            `[Render Log] ${componentName} Render count: ${renderCount.current}`,
-            { props: propsToTrack }
-            // { props: propsToTrack, timestamp: new Date().toISOString() }
-        )
+        const isRecording = propsToTrack && propsToTrack.recording;
+        if (isRecording) {
+            logger.info(
+                // `[Render Log] ${componentName} Render (${route}) count: ${renderCount.current}`,
+                `[Render Log] ${componentName} Render (${route})`,
+                { props: propsToTrack, timestamp: new Date().toISOString() }
+            );
+        }
 
         return () => {
-            logger.info(
-                `[Unmount Log] ${componentName}`
-            )
-        }
-    }, [])
+            if (isRecording) {
+                logger.info(
+                    `[Unmount Log] ${componentName}`,
+                    { props: propsToTrack, timestamp: new Date().toISOString() }
+                );
+            }
+        };
+    }, [route, JSON.stringify(propsToTrack)]);
 }
 
 export { useActionLog, useApiLog, useButtonLog, useErrorLog, useRenderLog };
