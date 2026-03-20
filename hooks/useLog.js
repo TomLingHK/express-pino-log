@@ -17,6 +17,25 @@ function useActionLog(componentName) {
     return logAction;
 }
 
+function useApiLog(componentName) {
+    const logApi = useCallback((apiName, method, returnData, additionalData = {}) => {
+        logger.info(
+            `[API Log] API_name: ${apiName} Method: ${method} Data: ${JSON.stringify(returnData)}`,
+            {
+                apiName: apiName,
+                method: method,
+                context: componentName,
+                returnData,
+                ...additionalData,
+                timestamp: new Date().toISOString(),
+            }
+        )
+    }, [componentName])
+
+    return logApi;
+}
+
+
 function useButtonLog(componentName) {
     const logClick = useCallback((buttonId, additionalData = {}) => {
         logger.info(
@@ -67,4 +86,4 @@ function useRenderLog(componentName, propsToTrack = {}) {
     }, [])
 }
 
-export { useActionLog, useButtonLog, useErrorLog, useRenderLog };
+export { useActionLog, useApiLog, useButtonLog, useErrorLog, useRenderLog };

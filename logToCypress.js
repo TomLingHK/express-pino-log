@@ -30,6 +30,31 @@ function translateLogs() {
           cypressCommands.push(`    cy.get('[data-cy="${buttonMatch[1]}"]').click();`);
         }
       }
+
+      // 處理 [API Log] - 使用 cy.intercept 模擬 API 請求
+      if (line.includes('[API Log]')) {
+        const apiMatch = line.match(/API_name: (\w+) Method: (\w+) Data: (.+)/);
+        if (apiMatch) {
+          const apiName = apiMatch[1];
+          const method = apiMatch[2];
+          let data = apiMatch[3];
+
+          try {
+            // Unescape backslashes in the data string
+            data = data.replace(/\\/g, '');
+            const parsedData = JSON.parse(data);
+
+            cypressCommands.push(`    cy.intercept('${method}', '/${apiName}', {`);
+            cypressCommands.push(`      statusCode: 200,`);
+            cypressCommands.push(`      body: ${JSON.stringify(parsedData, null, 2)}`);
+            cypressCommands.push(`    }).as('${apiName}');`);
+          } catch (err) {
+            cypressCommands.push(`    // Failed to parse API Log data`);
+            cypressCommands.push(`    console.error('Error parsing API Log data:', err);`);
+            console.log("Error: ", err)
+          }
+        }
+      }
     });
 
     // 封裝成 Cypress 的測試結構

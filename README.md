@@ -10,6 +10,20 @@ npm i
 npm start
 ```
 
+## Issue
+If chinese character cannot be shown in the cli, try to:
+1. Change the code page to UTF-8 by running `chcp 65001` in the command prompt.
+```
+chcp 65001
+```
+2. In PowerShell:
+```
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+$OutputEncoding = [System.Text.Encoding]::UTF8
+```
+
+
+
 ## React usage example
 ```js
 function LoginPage() {
