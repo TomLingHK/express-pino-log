@@ -1,0 +1,9 @@
+[Render Log] LoginPage Render
+[Button Log] Button click: loginButton (from LoginPage)
+[Action Log] LOGIN_ATTEMPT
+[Error Log] LOGIN_FAIL! Error: User or password not correct
+[Button Log] Button click: loginButton (from LoginPage)
+[Action Log] LOGIN_ATTEMPT
+[Action Log] LOGIN_SUCCESS
+[Unmount Log] LoginPage
+[Render Log] HomePage Render

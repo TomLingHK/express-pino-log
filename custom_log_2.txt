@@ -1,0 +1,3 @@
+[Render Log] LoginPage Render (/login)
+[Button Log] Button click: loginButton (from LoginPage)
+[Render Log] HomePage Render (/home)

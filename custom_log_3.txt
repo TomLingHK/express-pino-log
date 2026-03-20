@@ -1,0 +1,6 @@
+[Render Log] TestPage Render (/test)
+[Button Log] Button click: submitFormBtn (from Form)
+[Button Log] Button click: addItemBtn (from Form)
+[Button Log] Button click: addItemBtn (from Form)
+[Button Log] Button click: confirmPaymentBtn (from Form)
+[Render Log] PaymentPage Render (/payment)
