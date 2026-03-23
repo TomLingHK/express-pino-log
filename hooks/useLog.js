@@ -52,6 +52,22 @@ function useButtonLog(componentName) {
     return logClick;
 };
 
+function useComponentLog(componentName) {
+    const logProps = useCallback((props) => {
+        logger.debug(
+            `[Component Log] Component name: ${componentName} Props: ${JSON.stringify(props)}`,
+            {
+                event: 'component_render',
+                context: componentName,
+                props,
+                timestamp: new Date().toISOString(),
+            }
+        )
+    }, [componentName])
+
+    return logProps;
+}
+
 function useInputLog(componentName) {
     const logInput = useCallback((inputId, newValue, additionalData = {}) => {
         logger.info(
@@ -110,4 +126,4 @@ function useRenderLog(componentName, route='/', propsToTrack = {}) {
     }, [route, JSON.stringify(propsToTrack)]);
 }
 
-export { useActionLog, useApiLog, useButtonLog, useInputLog, useErrorLog, useRenderLog };
+export { useActionLog, useApiLog, useButtonLog, useComponentLog, useInputLog, useErrorLog, useRenderLog };

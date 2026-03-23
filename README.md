@@ -33,26 +33,26 @@ $OutputEncoding = [System.Text.Encoding]::UTF8
 
 ### useActionLog
 Usage:
-To log user actions, for example: logging in, filtering items, adding to cart, etc. You can call the logAction function with a custom action name and optional data to log specific user interactions. This can help you track user behavior and identify areas for improvement in your application.
+To log user actions, for example: logging in, filtering items, adding to cart, etc. You can call the `logAction` function with a custom action name and optional data to log specific user interactions. This can help you track user behavior and identify areas for improvement in your application.
 
 Example:
 ```js
-    const [pageName, setpageName] = useState('LoginPage');
+    const pageName = useRef('LoginPage');
     // Set page name / component name
-    const logAction = useActionLog(pageName);
+    const logAction = useActionLog(pageName.current);
     // (actionName, data (optional) )
     logAction('LOGIN_ATTEMPT', { username: username });
 ```
 
 ### useApiLog
 Usage:
-To log API calls, you can use the logApi function to record details about the API endpoint, HTTP method, response data, and any additional data you want to include. This can help you monitor API usage, identify performance issues, and track errors in your application.
+To log API calls, you can use the `logApi` function to record details about the API endpoint, HTTP method, response data, and any additional data you want to include. This can help you monitor API usage, identify performance issues, and track errors in your application.
 
 Example:
 ```js
-    const [pageName, setpageName] = useState('LoginPage');
+    const pageName = useRef('LoginPage');
     // Set page name / component name
-    const logApi = useApiLog(pageName);
+    const logApi = useApiLog(pageName.current);
     await login(username, password).then(result => {
         // (endpoint, method, return data, data (optional) )
         logApi('/api/login', 'POST', result, { username: username });
@@ -61,13 +61,13 @@ Example:
 
 ### useButtonLog
 Usage:
-To log button clicks, you can use the logClick function to record which buttons are being clicked by users. This can help you understand user interactions with your application and identify which features are most popular or may need improvement.
+To log button clicks, you can use the `logClick` function to record which buttons are being clicked by users. This can help you understand user interactions with your application and identify which features are most popular or may need improvement.
 
 Example:
 ```js
-    const [pageName, setpageName] = useState('LoginPage');
+    const pageName = useRef('LoginPage');
     // Set page name / component name
-    const logClick = useButtonLog(pageName);
+    const logClick = useButtonLog(pageName.current);
 
     const tryLogin = () => {
         // (buttonId of data-cy for cypress, data (optional) )
@@ -76,15 +76,44 @@ Example:
     }
 ```
 
-### useErrorLog
+### useComponentLog
 Usage:
-To log errors, you can use the logError function to record error details such as error name, error message, and any additional data you want to include. This can help you track and analyze errors in your application, allowing you to identify and fix issues more efficiently.
+To log component with detailed props, you can use the `logProps` function to record props whenever props change.
 
 Example:
 ```js
-    const [pageName, setpageName] = useState('LoginPage');
+function NewChatPopup(props) {
+    const { newChatCount, pageLang } = props;
+
+    const componentName = useRef('NewChatPopup');
+    // Set component name
+    const logProps = useComponentLog(componentName.current);
+    
+    useEffect(() => {
+        // (props object of the component)
+        logProps(props);
+    }, [newChatCount, pageLang])
+}
+```
+
+### useInputLog
+Usage:
+To log the text value of an input, you can use the `logInput` function to record change of input. Recommend to use within `useInputLogEffect`.
+
+Example:
+```js
+    logInput('usernameInput', 'Michael');
+```
+
+### useErrorLog
+Usage:
+To log errors, you can use the `logError` function to record error details such as error name, error message, and any additional data you want to include. This can help you track and analyze errors in your application, allowing you to identify and fix issues more efficiently.
+
+Example:
+```js
+    const pageName = useRef('LoginPage');
     // Set page name / component name
-    const logError = useErrorLog(pageName);
+    const logError = useErrorLog(pageName.current);
 
     try {
         //... login logic
