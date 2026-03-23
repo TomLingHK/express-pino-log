@@ -22,6 +22,13 @@ chcp 65001
 $OutputEncoding = [System.Text.Encoding]::UTF8
 ```
 
+## Table of Contents
+- [useLog](#uselog)
+- [useInputLogEffect](#useinputlogeffect)
+- [Record log in frontend application](#record-log-in-frontend-application)
+- [logToCypress.js](#logtocypressjs)
+
+
 ## useLog
 
 ### useActionLog
@@ -108,8 +115,22 @@ useInputLogEffect("HomePage", "usernameInput", username, 3000);
 ```
 
 
+## Record log in frontend application
+When the record btn is clicked, it would start recording logs from `useLog`. When the recording ends, it would download a txt file which contains all logs being recorded during the duration. The recording continues even when user changes to different pages of the application. Api data retrieved before the recording starts would not be recorded, you might want to start recording before you change to a new page.
+
+With the txt file, you may translate it to a Cypress test code using `logToCypress.js`. It can serve as a quick draft for Cypress test code and simulate the situation of user reported bug in Cypress.
+
+
 ## logToCypress.js
-This script reads logs from a specified input file, translates them into Cypress test code, and writes the generated code to a specified output file. You can run this script using Node.js, providing the input and output file paths as command-line arguments. If no arguments are provided, it defaults to 'custom_log.txt' for input and 'generated_test.cy.js' for output.
+This script reads logs from a txt file, translates them into Cypress test code, and writes the generated code to a specified output file. You can run this script using Node.js, providing the input and output file paths as command-line arguments. If no arguments are provided, it defaults to 'custom_log.txt' for input and 'generated_test.cy.js' for output.
+
+
+### Usage
+```
+node logToCypress.js [inputFile] [outputFile]
+// Example:
+node logToCypress.js log.txt generated_test.cy.js
+```
 
 ### Detail translation:
 
@@ -134,16 +155,16 @@ Translate into intercept code which stub network requests and responses.
 
 Example:
 ```js
-    cy.intercept('POST', '/getUserDetails', {
-      statusCode: 200,
-      body: {
-        "code": "Success",
-        "message": "Success",
-        "data": {
-            "id": 345,
-            "name": "Michael"
-        }
+cy.intercept('POST', '/getUserDetails', {
+    statusCode: 200,
+    body: {
+    "code": "Success",
+    "message": "Success",
+    "data": {
+        "id": 345,
+        "name": "Michael"
     }
+}
 ```
 
 #### Input Log
@@ -153,16 +174,3 @@ Example:
 ```js
 cy.get('[data-cy="usernameInput"]').type("tester1");
 ```
-
-
-### Usage
-```
-node logToCypress.js [inputFile] [outputFile]
-node logToCypress.js log.txt generated_test.cy.js
-```
-
-
-## Record log in frontend application
-When the record btn is clicked, it would start recording logs from `useLog`. When the recording is ended, it would download a txt file which contains all logs being recorded during the duration. The recording continues even when user changes to different pages of the application. Api data retrieved before the recording starts would not be recorded, you might want to start recording before you change to a new page.
-
-With the txt file, you may quickly translate it to a Cypress test code using `logToCypress.js`. It can serve as a quick draft for Cypress test code or a simulation of user reported bug.
