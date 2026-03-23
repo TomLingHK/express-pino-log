@@ -52,6 +52,24 @@ function useButtonLog(componentName) {
     return logClick;
 };
 
+function useInputLog(componentName) {
+    const logInput = useCallback((inputId, newValue, additionalData = {}) => {
+        logger.info(
+            `[Input Log] Input: ${inputId} Value: ${newValue}`,
+            {
+                event: 'input_change',
+                context: componentName,
+                inputId,
+                newValue,
+                ...additionalData,
+                timestamp: new Date().toISOString,
+            }
+        );
+    }, [componentName])
+
+    return logInput;
+}
+
 function useErrorLog(componentName) {
     const logError = useCallback((actionName, error, additionalData = {}) => {
         logger.error(
@@ -81,15 +99,15 @@ function useRenderLog(componentName, route='/', propsToTrack = {}) {
             );
         }
 
-        return () => {
-            if (isRecording) {
-                logger.info(
-                    `[Unmount Log] ${componentName}`,
-                    { props: propsToTrack, timestamp: new Date().toISOString() }
-                );
-            }
-        };
+        // return () => {
+        //     if (isRecording) {
+        //         logger.info(
+        //             `[Unmount Log] ${componentName}`,
+        //             { props: propsToTrack, timestamp: new Date().toISOString() }
+        //         );
+        //     }
+        // };
     }, [route, JSON.stringify(propsToTrack)]);
 }
 
-export { useActionLog, useApiLog, useButtonLog, useErrorLog, useRenderLog };
+export { useActionLog, useApiLog, useButtonLog, useInputLog, useErrorLog, useRenderLog };

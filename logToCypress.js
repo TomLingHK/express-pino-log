@@ -31,6 +31,15 @@ function translateLogs() {
         }
       }
 
+      // 處理 [Input Log] - 轉換為文字輸入 (使用 data-cy)
+      if (line.includes('[Input Log]')) {
+        const inputMatch = line.match(/Input: (\w+)/); // 抓取 'Input: ' 後的單字
+        const valueMatch = line.match(/Value: (\w+)/); // 抓取 'Value: ' 後的單字
+        if (inputMatch && valueMatch) {
+          cypressCommands.push(`    cy.get('[data-cy="${inputMatch[1]}"]').type("${valueMatch[1]}");`);
+        }
+      }
+
       // 處理 [API Log] - 使用 cy.intercept 模擬 API 請求
       if (line.includes('[API Log]')) {
         const apiMatch = line.match(/API_name: (\w+) Method: (\w+) Data: (.+)/);

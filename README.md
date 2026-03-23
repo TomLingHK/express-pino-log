@@ -22,7 +22,7 @@ chcp 65001
 $OutputEncoding = [System.Text.Encoding]::UTF8
 ```
 
-## Utils usage example
+## useLog
 
 ### useActionLog
 Usage:
@@ -91,12 +91,78 @@ Example:
 Usage:
 RecordButton calls useRenderLog with current pathname and recording flag, and it will log the page render with pathname and timestamp when recording is on. This can be used to track page visits and render times. Normally you would not need to call useRenderLog directly, but you can use the log data for performance analysis or user behavior tracking.
 
+## useInputLogEffect:
+A custom hook to log a text input. It would log the input if the value doesn't change for a certain delay of time. A cleanup function ensures the value is logged before the unmount of the page.
+
+Params:
+- Page name
+- data-cy of the element
+- Binding state of the input value
+- Delay time to mesaure change of input value (default 3000ms)
+
+Usage:
+```js
+const [username, setUsername] = useState('');
+// (page name, inputId of data-cy for cypress, value state of the input, delay (optional) )
+useInputLogEffect("HomePage", "usernameInput", username, 3000);
+```
+
 
 ## logToCypress.js
 This script reads logs from a specified input file, translates them into Cypress test code, and writes the generated code to a specified output file. You can run this script using Node.js, providing the input and output file paths as command-line arguments. If no arguments are provided, it defaults to 'custom_log.txt' for input and 'generated_test.cy.js' for output.
+
+### Detail translation:
+
+#### Render Log
+Translate into assertion of route change by checking url pathname. 
+
+Example:
+```js
+cy.location('pathname').should('eq', '/home');
+```
+
+#### Button Log
+Translate into an action of button click of the provided data-cy id.
+
+Example:
+```js
+cy.get('[data-cy="loginButton"]').click();
+```
+
+#### API Log
+Translate into intercept code which stub network requests and responses.
+
+Example:
+```js
+    cy.intercept('POST', '/getUserDetails', {
+      statusCode: 200,
+      body: {
+        "code": "Success",
+        "message": "Success",
+        "data": {
+            "id": 345,
+            "name": "Michael"
+        }
+    }
+```
+
+#### Input Log
+Translate into an action of typing into input of the provided daya-cy id.
+
+Example:
+```js
+cy.get('[data-cy="usernameInput"]').type("tester1");
+```
+
 
 ### Usage
 ```
 node logToCypress.js [inputFile] [outputFile]
 node logToCypress.js log.txt generated_test.cy.js
 ```
+
+
+## Record log in frontend application
+When the record btn is clicked, it would start recording logs from `useLog`. When the recording is ended, it would download a txt file which contains all logs being recorded during the duration. The recording continues even when user changes to different pages of the application. Api data retrieved before the recording starts would not be recorded, you might want to start recording before you change to a new page.
+
+With the txt file, you may quickly translate it to a Cypress test code using `logToCypress.js`. It can serve as a quick draft for Cypress test code or a simulation of user reported bug.
