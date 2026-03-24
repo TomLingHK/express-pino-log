@@ -1,5 +1,5 @@
 # express-pino-log
-Use pino in an express server to log frontend activities.
+Use pino in an express server to log frontend activities. You should set up the env variable `REACT_APP_DEV_LOG_URL` in your frontend application to send record log request to the express server.
 
 ## Frontend utils
 /hooks, /logger, /RecordBtn
@@ -149,6 +149,14 @@ When the record btn is clicked, it would start recording logs from `useLog`. Whe
 
 With the txt file, you may translate it to a Cypress test code using `logToCypress.js`. It can serve as a quick draft for Cypress test code and simulate the situation of user reported bug in Cypress.
 
+Usage:
+
+In your react application, only show the record button on development or testing environment. `RecordButton` contains all logic to record log. Ensure `logger` utils and `useLog` hook is available for this component to access.
+
+```js
+{process.env.REACT_APP_IS_PROD === 'FALSE' && <RecordButton />}
+```
+
 
 ## logToCypress.js
 This script reads logs from a txt file, translates them into Cypress test code, and writes the generated code to a specified output file. You can run this script using Node.js, providing the input and output file paths as command-line arguments. If no arguments are provided, it defaults to 'custom_log.txt' for input and 'generated_test.cy.js' for output.
@@ -202,4 +210,14 @@ Translate into an action of typing into input of the provided daya-cy id.
 Example:
 ```js
 cy.get('[data-cy="usernameInput"]').type("tester1");
+```
+
+## logToComponentTest.js
+This script reads logs from a txt file, translates them into Cypress test code, and writes the generated code to a specified output file. It targets component testing to focus on how different props of component affect the component. You can run this script using Node.js, providing the input and output file paths as command-line arguments. If no arguments are provided, it defaults to 'custom_log.txt' for input and 'generated_test.cy.js' for output.
+
+### Usage
+```
+node logToComponentTest.js [inputFile] [outputFile]
+// Example:
+node logToComponentTest.js log.txt generated_test.cy.js
 ```

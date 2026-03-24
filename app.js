@@ -24,6 +24,11 @@ const logger = pino({
                 target: 'pino/file',
                 options: { destination: './combined.log' },
                 level: 'info', mkdir: true
+            },
+            {
+                target: 'pino/file',
+                options: { destination: './debug.log' },
+                level: 'debug', mkdir: true
             }
         ],
         options: {

@@ -58,7 +58,7 @@ export default function RecordButton() {
                 aria-pressed={recording}
                 title={recording ? 'Stop recording and download logs' : 'Start recording logs'}
             >
-                {recording ? 'Stop & Download' : 'Start Recording'}
+                {recording ? 'Stop & Download' : 'Start Recording Log'}
             </button>
         </div>
     );
