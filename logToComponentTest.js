@@ -3,7 +3,7 @@ const fs = require('fs');
 // 解析命令列參數
 const args = process.argv.slice(2);
 const inputFile = args[0] || 'custom_log.txt'; // 預設值
-const outputFile = args[1] || 'generated_test.cy.js'; // 預設值
+const outputFile = args[1] || 'generated_test.cy.jsx'; // 預設值
 
 function translateLogs() {
   try {

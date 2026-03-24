@@ -1,0 +1,7 @@
+2026-03-20T09:04:59.901Z [info] [Render Log] Route Render (/login)
+2026-03-20T09:05:01.631Z [info] [Button Log] Button click: loginButton (from LoginPage)
+2026-03-20T09:05:01.632Z [info] [Action Log] LOGIN_ATTEMPT
+2026-03-20T09:05:01.969Z [info] [Action Log] LOGIN_SUCCESS
+2026-03-20T09:05:01.969Z [info] [Input Log] Input: usernameInput Value: tester1
+2026-03-20T09:05:01.972Z [info] [Render Log] Route Render (/home)
+2026-03-20T09:05:02.172Z [info] [API Log] API_name: getLLMChatSession Method: POST Data: {"code":"Success","message":"Success","data":{"sessions":[{"id":212,"last_modified_date":"2026-03-16T15:51:50+08:00","tag":["administrative_QnA","中文"],"created_date":"2026-03-16T08:10:43+08:00","name":"新聊天174"},{"id":211,"last_modified_date":"2026-03-13T17:15:12+08:00","tag":["speech","English"],"created_date":"2026-03-13T15:18:01+08:00","name":"c59_test"}],"count":174}}

@@ -27,6 +27,7 @@ $OutputEncoding = [System.Text.Encoding]::UTF8
 - [useInputLogEffect](#useinputlogeffect)
 - [Record log in frontend application](#record-log-in-frontend-application)
 - [logToCypress.js](#logtocypressjs)
+- [logToComponentTest.js](#logtocomponenttestjs)
 
 
 ## useLog
@@ -213,11 +214,11 @@ cy.get('[data-cy="usernameInput"]').type("tester1");
 ```
 
 ## logToComponentTest.js
-This script reads logs from a txt file, translates them into Cypress test code, and writes the generated code to a specified output file. It targets component testing to focus on how different props of component affect the component. You can run this script using Node.js, providing the input and output file paths as command-line arguments. If no arguments are provided, it defaults to 'custom_log.txt' for input and 'generated_test.cy.js' for output.
+This script reads logs from a txt file, translates them into Cypress test code, and writes the generated code to a specified output file. It targets component testing to focus on how different props of component affect the component. You can run this script using Node.js, providing the input and output file paths as command-line arguments. If no arguments are provided, it defaults to 'custom_log.txt' for input and 'generated_test.cy.jsx' for output.
 
 ### Usage
 ```
 node logToComponentTest.js [inputFile] [outputFile]
 // Example:
-node logToComponentTest.js log.txt generated_test.cy.js
+node logToComponentTest.js log.txt generated_test.cy.jsx
 ```

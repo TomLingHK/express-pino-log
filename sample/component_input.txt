@@ -1,0 +1,2 @@
+2026-03-23T08:28:54.464Z [info] [Render Log] Route Render (/home)
+2026-03-23T08:28:55.656Z [debug] [Component Log] Component name: NewChatPopup Props: {"newChatCount":175,"pageLang":"en"}
