@@ -1,10 +1,35 @@
 # express-pino-log
+
+This repo aims to record consecutive actions of the same session as a log file and quickly translates into Cypress test code file. 
+
+Benefits for users:
+- Less text description for whole process to report the bug
+
+Benefits for developers:
+- Save time from
+    - reading bug report
+    - acquiring additional data from reporter
+    - figuring out how to reproduce the error
+- Set up new test from preventing the issue from happening again
+
+To set up express-pino-log, you may:
+
+## Enable recording and downloading log in frontend application
+To set up, set up the components / hooks below in your frontend application:
+- /hooks
+- /logger
+- /RecordBtn
+
+On top of that, you should set up custom hooks on api calling, buttons, elements, etc., that trigger actions needed to be recorded. Logs would cover data like api calling data, error logging, elements interactions, page navigation, etc. You may find details on session below. ([useLog](#uselog))
+
+
+## Set up addtional express server (Deprecate)
 Use pino in an express server to log frontend activities. You should set up the env variable `REACT_APP_DEV_LOG_URL` in your frontend application to send record log request to the express server.
 
 ## Frontend utils
 /hooks, /logger, /RecordBtn
 
-## Express server setup
+## Express server setup (Deprecate)
 ```
 npm i
 npm start
@@ -31,6 +56,8 @@ $OutputEncoding = [System.Text.Encoding]::UTF8
 
 
 ## useLog
+
+Custom hook that contains a few logging functions to log different types of logs.
 
 ### useActionLog
 Usage:
@@ -103,6 +130,7 @@ To log the text value of an input, you can use the `logInput` function to record
 
 Example:
 ```js
+    // (inputId of data-cy for cypress, value )
     logInput('usernameInput', 'Michael');
 ```
 
@@ -160,7 +188,7 @@ In your react application, only show the record button on development or testing
 
 
 ## logToCypress.js
-This script reads logs from a txt file, translates them into Cypress test code, and writes the generated code to a specified output file. You can run this script using Node.js, providing the input and output file paths as command-line arguments. If no arguments are provided, it defaults to 'custom_log.txt' for input and 'generated_test.cy.js' for output.
+This script reads logs from a txt file, translates them into Cypress test code, and writes the generated code to a specified output file. It targets e2e test to test the same way users interact with your app. You can run this script using Node.js, providing the input and output file paths as command-line arguments. If no arguments are provided, it defaults to 'custom_log.txt' for input and 'generated_test.cy.js' for output.
 
 
 ### Usage
@@ -222,3 +250,7 @@ node logToComponentTest.js [inputFile] [outputFile]
 // Example:
 node logToComponentTest.js log.txt generated_test.cy.jsx
 ```
+
+## translate_log_and_comment.yaml
+
+TBC
