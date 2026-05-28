@@ -1,4 +1,5 @@
-const fs = require('fs');
+// const fs = require('fs');
+import fs from 'fs';
 
 // 解析命令列參數
 const args = process.argv.slice(2);

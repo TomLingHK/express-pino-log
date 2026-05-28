@@ -18,16 +18,15 @@ To set up express-pino-log, you may:
 To set up, set up the components / hooks below in your frontend application:
 - /hooks
 - /logger
-- /RecordBtn
+- /RecordBtn (Display on the topmost layer that remains across navigation)
 
 On top of that, you should set up custom hooks on api calling, buttons, elements, etc., that trigger actions needed to be recorded. Logs would cover data like api calling data, error logging, elements interactions, page navigation, etc. You may find details on session below. ([useLog](#uselog))
 
+## Frontend utils
+/hooks, /logger, /RecordBtn
 
 ## Set up addtional express server (Deprecate)
 Use pino in an express server to log frontend activities. You should set up the env variable `REACT_APP_DEV_LOG_URL` in your frontend application to send record log request to the express server.
-
-## Frontend utils
-/hooks, /logger, /RecordBtn
 
 ## Express server setup (Deprecate)
 ```
@@ -60,7 +59,7 @@ $OutputEncoding = [System.Text.Encoding]::UTF8
 Custom hook that contains a few logging functions to log different types of logs.
 
 ### useActionLog
-Usage:
+Usage:\
 To log user actions, for example: logging in, filtering items, adding to cart, etc. You can call the `logAction` function with a custom action name and optional data to log specific user interactions. This can help you track user behavior and identify areas for improvement in your application.
 
 Example:
@@ -73,7 +72,7 @@ Example:
 ```
 
 ### useApiLog
-Usage:
+Usage:\
 To log API calls, you can use the `logApi` function to record details about the API endpoint, HTTP method, response data, and any additional data you want to include. This can help you monitor API usage, identify performance issues, and track errors in your application.
 
 Example:
@@ -88,7 +87,7 @@ Example:
 ```
 
 ### useButtonLog
-Usage:
+Usage:\
 To log button clicks, you can use the `logClick` function to record which buttons are being clicked by users. This can help you understand user interactions with your application and identify which features are most popular or may need improvement.
 
 Example:
@@ -105,7 +104,7 @@ Example:
 ```
 
 ### useComponentLog
-Usage:
+Usage:\
 To log component with detailed props, you can use the `logProps` function to record props whenever props change.
 
 Example:
@@ -125,7 +124,7 @@ function NewChatPopup(props) {
 ```
 
 ### useInputLog
-Usage:
+Usage:\
 To log the text value of an input, you can use the `logInput` function to record change of input. Recommend to use within `useInputLogEffect`.
 
 Example:
@@ -135,7 +134,7 @@ Example:
 ```
 
 ### useErrorLog
-Usage:
+Usage:\
 To log errors, you can use the `logError` function to record error details such as error name, error message, and any additional data you want to include. This can help you track and analyze errors in your application, allowing you to identify and fix issues more efficiently.
 
 Example:
@@ -178,8 +177,7 @@ When the record btn is clicked, it would start recording logs from `useLog`. Whe
 
 With the txt file, you may translate it to a Cypress test code using `logToCypress.js`. It can serve as a quick draft for Cypress test code and simulate the situation of user reported bug in Cypress.
 
-Usage:
-
+Usage:\
 In your react application, only show the record button on development or testing environment. `RecordButton` contains all logic to record log. Ensure `logger` utils and `useLog` hook is available for this component to access.
 
 ```js
@@ -253,4 +251,32 @@ node logToComponentTest.js log.txt generated_test.cy.jsx
 
 ## translate_log_and_comment.yaml
 
-TBC
+### Set up 
+Set up `translate_log_and_comment.yaml` and `logToCypress.js` in the .github folder.
+
+```
+.
+├── .github/
+    ├── scripts/
+        └── logToCypress.js
+    └── workflows/
+        └── translate_log_and_comment.yaml
+```
+
+Description:
+The `translate_log_and_comment.yaml` workflow automatically converts application logs into Cypress test files. 
+
+To provide logs in an GitHub Issue:
+**Inline Logs**: Paste logs from the downloaded text log file directly in the issue description using a code block.
+
+Example:
+```logs
+[Render Log] (/)
+[Input Log] Input: username Value: testuser
+[Input Log] Input: password Value: pass123
+[Button Log] Button click: loginBtn
+[Render Log] (/dashboard)
+[API Log] API_name: getUserData Method: GET Data: {}
+```
+
+After processing the logs, the workflow generates a Cypress test file and uploads it as an artifact. It then comments on the issue with a download link to the generated test file.
