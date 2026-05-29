@@ -12,6 +12,36 @@ Benefits for developers:
     - figuring out how to reproduce the error
 - Set up new test from preventing the issue from happening again
 
+## Frontend record steps:
+
+1. Record log
+
+    Click the 'Start Recording' button to start recording log. It would keep recording even navigating to another page. When you want to stop recording, click the 'Stop & Download' button. A log file in .txt format will be downloaded to your device.
+
+2. Logs content
+
+    The log file contains some actions and data occured during the recording.
+
+    ![img_1](/public/log_file_img.jpg)
+
+
+3. Uploading logs in GitHub Issue
+
+    You may either:\
+    Paste the log to the `code block` in the GitHub Issue.
+    ![upload_img_paste](/public/issue_upload_img_2.jpg)
+    or `upload the file` directly to attach in the GitHub Issue.
+    ![upload_img_attach](/public/issue_upload_img_1.jpg)
+
+4. Obtaining Cypress code (For developers)
+
+    If the log file is being pasted as a code block, `translate_log_and_comment.yaml` workflow would proceed. It aims to translate the text file into a Cypress test code. Comment would be created below after the process is completed.
+    ![comment_img](/public/workflow_comment.png)
+    Click the link of the comment would bring you to the workflow page. You may download the test code file in the artifact section to repeat the issue in Cypress.
+    ![artifact_img](/public/artifact_download.png)
+
+---
+
 To set up express-pino-log, you may:
 
 ## Enable recording and downloading log in frontend application
@@ -266,7 +296,7 @@ Set up `translate_log_and_comment.yaml` and `logToCypress.js` in the .github fol
 Description:
 The `translate_log_and_comment.yaml` workflow automatically converts application logs into Cypress test files. 
 
-To provide logs in an GitHub Issue:
+To provide logs in an GitHub Issue:\
 **Inline Logs**: Paste logs from the downloaded text log file directly in the issue description using a code block.
 
 Example:
