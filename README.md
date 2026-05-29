@@ -18,14 +18,16 @@ Benefits for developers:
 
     Click the 'Start Recording' button to start recording log. It would keep recording even navigating to another page. When you want to stop recording, click the 'Stop & Download' button. A log file in .txt format will be downloaded to your device.
 
-2. Logs content
+    https://github.com/user-attachments/assets/980c6ca2-9d15-4963-aad3-0b15d7b77e65
+   
+3. Logs content
 
     The log file contains some actions and data occured during the recording.
 
     ![img_1](/public/log_file_img.jpg)
 
 
-3. Uploading logs in GitHub Issue
+4. Uploading logs in GitHub Issue
 
     You may either:\
     Paste the log to the `code block` in the GitHub Issue.
@@ -33,7 +35,7 @@ Benefits for developers:
     or `upload the file` directly to attach in the GitHub Issue.
     ![upload_img_attach](/public/issue_upload_img_1.jpg)
 
-4. Obtaining Cypress code (For developers)
+5. Obtaining Cypress code (For developers)
 
     If the log file is being pasted as a code block, `translate_log_and_comment.yaml` workflow would proceed. It aims to translate the text file into a Cypress test code. Comment would be created below after the process is completed.
     ![comment_img](/public/workflow_comment.png)
