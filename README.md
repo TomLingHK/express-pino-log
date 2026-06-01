@@ -20,14 +20,14 @@ Benefits for developers:
 
     https://github.com/user-attachments/assets/980c6ca2-9d15-4963-aad3-0b15d7b77e65
    
-3. Logs content
+2. Logs content
 
     The log file contains some actions and data occured during the recording.
 
     ![img_1](/public/log_file_img.jpg)
 
 
-4. Uploading logs in GitHub Issue
+3. Uploading logs in GitHub Issue
 
     You may either:\
     Paste the log to the `code block` in the GitHub Issue.
@@ -35,12 +35,10 @@ Benefits for developers:
     or `upload the file` directly to attach in the GitHub Issue.
     ![upload_img_attach](/public/issue_upload_img_1.jpg)
 
-5. Obtaining Cypress code (For developers)
+4. Obtaining Cypress code (For developers)
 
-    If the log file is being pasted as a code block, `translate_log_and_comment.yaml` workflow would proceed. It aims to translate the text file into a Cypress test code. Comment would be created below after the process is completed.
+    If the log file is being pasted as a code block, `translate_log_and_comment.yaml` workflow would proceed. It aims to translate the text file into a Cypress test code. The translated code block would be shown in the comment created by github-actions.
     ![comment_img](/public/workflow_comment.png)
-    Click the link of the comment would bring you to the workflow page. You may download the test code file in the artifact section to repeat the issue in Cypress.
-    ![artifact_img](/public/artifact_download.png)
 
 ---
 

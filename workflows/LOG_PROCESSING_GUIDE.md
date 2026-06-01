@@ -25,8 +25,8 @@ When you create or edit an issue with logs:
 1. **Extract** - The workflow detects which log source is provided (inline or URL)
 2. **Download** - Logs are extracted or downloaded to `input_log.txt`
 3. **Process** - The `logToCypress.js` script converts logs to Cypress test syntax
-4. **Generate** - A `.cy.js` test file is created and uploaded as an artifact
-5. **Notify** - The issue is commented with a download link to the artifact
+4. **Generate** - A `.cy.js` test file is created
+5. **Notify** - The issue is commented with Cypress test code of the test file
 
 ---
 

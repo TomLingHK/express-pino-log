@@ -58,24 +58,25 @@ jobs:
           echo "Processing logs ($(wc -l < input_log.txt) lines)..."
           node .github/scripts/logToCypress.js input_log.txt issue_${{ github.event.issue.number }}.cy.js
 
-      - name: Upload Result Artifact
-        id: upload-artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: processed-log-${{ github.event.issue.number }}
-          path: issue_${{ github.event.issue.number }}.cy.js
-          retention-days: 7
-
       - name: Comment on Issue
         if: ${{ steps.extract_log.outputs.inline_logs != '' }}
         uses: actions/github-script@v7
         with:
           script: |
-            const artifactUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const fs = require('fs');
+            const testFile = `issue_${{ github.event.issue.number }}.cy.js`;
+            
+            let testContent = '';
+            try {
+              testContent = fs.readFileSync(testFile, 'utf8');
+            } catch (err) {
+              console.error('Error reading test file:', err);
+              testContent = 'Error: Could not read generated test file';
+            }
 
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `✅ Cypress test generated! Download the result from the **Artifacts** section of the [Workflow Run](${artifactUrl}).`
+              body: `✅ Cypress test code generated!\n\n\`\`\`javascript\n${testContent}\n\`\`\``
             })
