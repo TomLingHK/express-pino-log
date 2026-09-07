@@ -126,4 +126,18 @@ function useRenderLog(componentName, route='/', propsToTrack = {}) {
     }, [route, JSON.stringify(propsToTrack)]);
 }
 
-export { useActionLog, useApiLog, useButtonLog, useComponentLog, useInputLog, useErrorLog, useRenderLog };
+function useScreenSizeLog(componentName, route='/', propsToTrack = {}) {
+    useEffect(() => {
+        const isRecording = propsToTrack && propsToTrack?.recording;
+        const width = propsToTrack?.width;
+        const height = propsToTrack?.height;
+
+        if (isRecording && !!width && !!height) {
+            logger.info(
+                `[Screen Log] ${componentName} Render (${route}) Screen Width: ${width} Height: ${height}`,
+            );
+        }
+    }, [JSON.stringify(propsToTrack)])
+}
+
+export { useActionLog, useApiLog, useButtonLog, useComponentLog, useInputLog, useErrorLog, useRenderLog, useScreenSizeLog };

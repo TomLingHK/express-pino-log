@@ -65,6 +65,26 @@ function translateLogs() {
           }
         }
       }
+
+      // 處理 [Screen Log] - 使用 cy.viewport
+      if (line.includes('[Screen Log]')) {
+        console.log("screen log handling")
+
+        const screenMatch = line.match(/Screen Width: (\w+) Height: (\w+)/);
+        if (screenMatch) {
+          const width = screenMatch[1];
+          const height = screenMatch[2];
+
+          try {
+            cypressCommands.push(`    cy.viewport(${width}, ${height})`);
+          } catch (error) {
+            cypressCommands.push(`    // Failed to parse Screen Log data`);
+            cypressCommands.push(`    console.error('Error parsing Screen Log data:', err);`);
+            console.log("Error: ", err)
+          }
+        }
+      }
+      
     });
 
     // 封裝成 Cypress 的測試結構

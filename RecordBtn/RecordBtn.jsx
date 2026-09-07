@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { logger } from '../../logger';
-import { useRenderLog } from '../../hooks/useLog';
+import { useRenderLog, useScreenSizeLog } from '../../hooks/useLog';
 import './RecordButton.css';
 
 export default function RecordButton() {
@@ -11,6 +11,7 @@ export default function RecordButton() {
     const prevPath = useRef(location.pathname);
 
     // log route render info when recording is active
+    useScreenSizeLog('Route', location.pathname, { width: window.innerWidth, height: window.innerHeight, recording })
     useRenderLog('Route', location.pathname, { pathname: location.pathname, recording });
 
     useEffect(() => {
