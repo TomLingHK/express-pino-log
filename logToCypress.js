@@ -58,6 +58,7 @@ function translateLogs() {
             cypressCommands.push(`      statusCode: 200,`);
             cypressCommands.push(`      body: ${JSON.stringify(parsedData, null, 2)}`);
             cypressCommands.push(`    }).as('${apiName}');`);
+            cypressCommands.push(`    cy.wait('@${apiName}');`);
           } catch (err) {
             cypressCommands.push(`    // Failed to parse API Log data`);
             cypressCommands.push(`    console.error('Error parsing API Log data:', err);`);
