@@ -43,18 +43,19 @@ function translateLogs() {
 
       // 處理 [API Log] - 使用 cy.intercept 模擬 API 請求
       if (line.includes('[API Log]')) {
-        const apiMatch = line.match(/API_name: (\w+) Method: (\w+) Data: (.+)/);
+        const apiMatch = line.match(/API_name: (\w+) API_url: (\w+) Method: (\w+) Data: (.+)/);
         if (apiMatch) {
           const apiName = apiMatch[1];
-          const method = apiMatch[2];
-          let data = apiMatch[3];
+          const apiUrl = apiMatch[2];
+          const method = apiMatch[3];
+          let data = apiMatch[4];
 
           try {
             // Unescape backslashes in the data string
             data = data.replace(/\\/g, '');
             const parsedData = JSON.parse(data);
 
-            cypressCommands.push(`    cy.intercept('${method}', '/${apiName}', {`);
+            cypressCommands.push(`    cy.intercept('${method}', '${apiUrl}', {`);
             cypressCommands.push(`      statusCode: 200,`);
             cypressCommands.push(`      body: ${JSON.stringify(parsedData, null, 2)}`);
             cypressCommands.push(`    }).as('${apiName}');`);

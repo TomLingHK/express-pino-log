@@ -18,9 +18,9 @@ function useActionLog(componentName) {
 }
 
 function useApiLog(componentName) {
-    const logApi = useCallback((apiName, method, returnData, additionalData = {}) => {
+    const logApi = useCallback((apiName, apiUrl, method, returnData, additionalData = {}) => {
         logger.info(
-            `[API Log] API_name: ${apiName} Method: ${method} Data: ${JSON.stringify(returnData)}`,
+            `[API Log] API_name: ${apiName} API_url: ${apiUrl} Method: ${method} Data: ${JSON.stringify(returnData)}`,
             {
                 apiName: apiName,
                 method: method,

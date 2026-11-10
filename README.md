@@ -112,7 +112,7 @@ Example:
     const logApi = useApiLog(pageName.current);
     await login(username, password).then(result => {
         // (endpoint, method, return data, data (optional) )
-        logApi('/api/login', 'POST', result, { username: username });
+        logApi('userLogin', '**/api/login', 'POST', result, { username: username });
     })
 ```
 
@@ -249,7 +249,7 @@ Translate into intercept code which stub network requests and responses.
 
 Example:
 ```js
-cy.intercept('POST', '/getUserDetails', {
+cy.intercept('POST', '**/user-info', {
     statusCode: 200,
     body: {
     "code": "Success",
@@ -306,7 +306,7 @@ Example:
 [Input Log] Input: password Value: pass123
 [Button Log] Button click: loginBtn
 [Render Log] (/dashboard)
-[API Log] API_name: getUserData Method: GET Data: {}
+[API Log] API_name: getUserData API_url: **/user-info Method: GET Data: {}
 ```
 
 After processing the logs, the workflow generates a Cypress test file and uploads it as an artifact. It then comments on the issue with a download link to the generated test file.
