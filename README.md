@@ -216,13 +216,15 @@ In your react application, only show the record button on development or testing
 
 
 ## logToCypress.js
-This script reads logs from a txt file, translates them into Cypress test code, and writes the generated code to a specified output file. It targets e2e test to test the same way users interact with your app. You can run this script using Node.js, providing the input and output file paths as command-line arguments. If no arguments are provided, it defaults to 'custom_log.txt' for input and 'generated_test.cy.js' for output.
+This script reads logs from txt files and translates them into Cypress test code. It targets e2e test to test the same way users interact with your app. With no arguments, it converts every `.txt` file in the `input` directory and writes each test to the `output` directory using the source file name (for example, `input/test_click.txt` becomes `output/test_click.cy.js`). You can also provide an input file and optional output file as command-line arguments.
 
 
 ### Usage
 ```
 node logToCypress.js [inputFile] [outputFile]
-// Example:
+// Convert all .txt files in input/ to corresponding files in output/:
+node logToCypress.js
+// Convert one file to a specified output:
 node logToCypress.js log.txt generated_test.cy.js
 ```
 

@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { useInputLog } from "./useLog";
 
 
-function useInputLogEffect(pageName, inputId, value, delay = 3000) {
+function useInputLogEffect(pageName, inputId, value, delay = 100) {
     const logInput = useInputLog(pageName);
 
     const timerRef = useRef(null);

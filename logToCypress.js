@@ -1,12 +1,11 @@
 // const fs = require('fs');
 import fs from 'fs';
+import path from 'path';
 
 // 解析命令列參數
 const args = process.argv.slice(2);
-const inputFile = args[0] || 'custom_log.txt'; // 預設值
-const outputFile = args[1] || 'generated_test.cy.js'; // 預設值
 
-function translateLogs() {
+function translateLogs(inputFile, outputFile) {
   try {
     const data = fs.readFileSync(inputFile, 'utf8');
     const lines = data.split('\n');
@@ -101,9 +100,57 @@ ${cypressCommands.join('\n')}
 
     fs.writeFileSync(outputFile, testTemplate);
     console.log(`✅ 轉換成功！請查看 ${outputFile}`);
+    return true;
   } catch (err) {
-    console.error('❌ 讀取或寫入檔案時出錯:', err);
+    console.error(`❌ 轉換 ${inputFile} 時出錯:`, err);
+    return false;
   }
 }
 
-translateLogs();
+function runTranslation(inputFile, outputFile) {
+  try {
+    fs.mkdirSync(path.dirname(outputFile), { recursive: true });
+    return translateLogs(inputFile, outputFile);
+  } catch (err) {
+    console.error(`❌ 轉換 ${inputFile} 時出錯:`, err);
+    return false;
+  }
+}
+
+if (args.length === 0) {
+  const inputDir = 'input';
+  const outputDir = 'output';
+
+  try {
+    const inputFiles = fs.readdirSync(inputDir, { withFileTypes: true })
+      .filter(entry => entry.isFile() && path.extname(entry.name).toLowerCase() === '.txt')
+      .map(entry => entry.name)
+      .sort();
+
+    if (inputFiles.length === 0) {
+      console.error(`❌ 在 ${inputDir} 目錄中找不到 .txt 檔案。`);
+      process.exitCode = 1;
+    } else {
+      const succeeded = inputFiles
+        .map(file => runTranslation(
+          path.join(inputDir, file),
+          path.join(outputDir, `${path.parse(file).name}.cy.js`)
+        ))
+        .every(Boolean);
+
+      if (!succeeded) {
+        process.exitCode = 1;
+      }
+    }
+  } catch (err) {
+    console.error(`❌ 讀取 ${inputDir} 目錄時出錯:`, err);
+    process.exitCode = 1;
+  }
+} else {
+  const inputFile = args[0] || 'custom_log.txt';
+  const outputFile = args[1] || 'generated_test.cy.js';
+
+  if (!runTranslation(inputFile, outputFile)) {
+    process.exitCode = 1;
+  }
+}
