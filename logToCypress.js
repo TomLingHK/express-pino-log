@@ -8,7 +8,7 @@ const args = process.argv.slice(2);
 function translateLogs(inputFile, outputFile) {
   try {
     const data = fs.readFileSync(inputFile, 'utf8');
-    const lines = data.split('\n');
+    const lines = data.split(/\r?\n/);
     
     let cypressCommands = [];
 
@@ -33,32 +33,33 @@ function translateLogs(inputFile, outputFile) {
 
       // 處理 [Input Log] - 轉換為文字輸入 (使用 data-cy)
       if (line.includes('[Input Log]')) {
-        const inputMatch = line.match(/Input: (\w+)/); // 抓取 'Input: ' 後的單字
-        const valueMatch = line.match(/Value: (\w+)/); // 抓取 'Value: ' 後的單字
+        const inputMatch = line.match(/Input: (\S+) Value: /);
+        const valueMatch = line.match(/Value: (.*)$/);
         if (inputMatch && valueMatch) {
-          cypressCommands.push(`    cy.get('[data-cy="${inputMatch[1]}"]').type("${valueMatch[1]}");`);
+          const inputValue = valueMatch[1];
+          const typeCommand = inputValue ? `.type(${JSON.stringify(inputValue)})` : '';
+          cypressCommands.push(`    cy.get('[data-cy="${inputMatch[1]}"]').clear()${typeCommand};`);
         }
       }
 
       // 處理 [API Log] - 使用 cy.intercept 模擬 API 請求
       if (line.includes('[API Log]')) {
-        const apiMatch = line.match(/API_name: (\w+) API_url: (\w+) Method: (\w+) Data: (.+)/);
+        const apiMatch = line.match(/API_name: (\S+) API_url: (\S+) Method: (\S+) Data: (.*)$/);
         if (apiMatch) {
           const apiName = apiMatch[1];
           const apiUrl = apiMatch[2];
           const method = apiMatch[3];
-          let data = apiMatch[4];
+          const alias = `@${apiName}`;
+          const data = apiMatch[4];
 
           try {
-            // Unescape backslashes in the data string
-            data = data.replace(/\\/g, '');
             const parsedData = JSON.parse(data);
 
-            cypressCommands.push(`    cy.intercept('${method}', '${apiUrl}', {`);
+            cypressCommands.push(`    cy.intercept(${JSON.stringify(method)}, ${JSON.stringify(apiUrl)}, {`);
             cypressCommands.push(`      statusCode: 200,`);
             cypressCommands.push(`      body: ${JSON.stringify(parsedData, null, 2)}`);
-            cypressCommands.push(`    }).as('${apiName}');`);
-            cypressCommands.push(`    cy.wait('@${apiName}');`);
+            cypressCommands.push(`    }).as(${JSON.stringify(apiName)});`);
+            cypressCommands.push(`    cy.wait(${JSON.stringify(alias)});`);
           } catch (err) {
             cypressCommands.push(`    // Failed to parse API Log data`);
             cypressCommands.push(`    console.error('Error parsing API Log data:', err);`);
